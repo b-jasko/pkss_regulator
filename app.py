@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+import requests
 import json
 
 app = Flask(__name__)
@@ -10,7 +11,8 @@ e_n_1 = 0
 Um_n_1 = 0
 
 SUMA = []
-
+global time
+time = "1999-01-29 04:05:06"
 
 def regulation():
     global SUMA
@@ -20,10 +22,11 @@ def regulation():
     global Um_n_1
     global Fzm
     global Um
+    global time
 
     Kp = 1
     Ki = 10
-    Kd = 0
+    Kd = 0.1
 
     SP = 55 - 1.75 * T_o
     e = SP - T_zco
@@ -40,6 +43,17 @@ def regulation():
     # T_zco = (Um - Um_n_1) *(1 - exp(-1/100))
     Um_n_1 = Um
     Fzm = 80*1000/3600*Um
+
+    url_logger = "http://4bcc0e78.ngrok.io"
+    json_logger = {
+        "U_m": Um,
+        "F_zm": 45,
+        "T_zcoref": SP,
+        "timestamp": time
+    }
+
+    r = requests.post(url=url_logger + "/5", json = json_logger)
+    print(r.content)
 
     return 'Um = %.2f, <br/> e = %.2f <br/>T_zco = %.2f <br/>T_o = %.2f <br/>SP = %.2f' % (Um, e, T_zco, T_o, SP)
 
@@ -84,6 +98,8 @@ def index_3():
     start_time = time_module_json['startTime']
     print(start_time)
     return "module 5 started"
+
+
 
 if __name__ == '__main__':
     app.run()

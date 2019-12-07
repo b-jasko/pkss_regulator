@@ -24,8 +24,8 @@ def regulation():
     global Um
     global time
 
-    Kp = 1
-    Ki = 10
+    Kp = 0.1
+    Ki = 1
     Kd = 0.1
 
     SP = 55 - 1.75 * T_o
@@ -44,7 +44,7 @@ def regulation():
     Um_n_1 = Um
     Fzm = 80*1000/3600*Um
 
-    url_logger = "http://4bcc0e78.ngrok.io"
+    url_logger = "http://e4d48e57.ngrok.io"
     json_logger = {
         "U_m": Um,
         "F_zm": 45,
@@ -72,9 +72,7 @@ def index_1():
     T_zco_json = json.loads(request.data)
     print(T_zco_json)
     T_zco = float(T_zco_json['Tzco'])
-    print(T_zco)
     print(regulation())
-    print(T_zco)
     return {"Fzm":Fzm,
             "Um":Um
             }

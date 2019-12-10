@@ -40,14 +40,13 @@ def regulation():
     elif Um < 0:
         Um = 0
     e_n_1 = e
-    # T_zco = (Um - Um_n_1) *(1 - exp(-1/100))
     Um_n_1 = Um
     Fzm = 80*1000/3600*Um
 
     url_logger = "http://e4d48e57.ngrok.io"
     json_logger = {
         "U_m": Um,
-        "F_zm": 45,
+        "F_zm": Fzm,
         "T_zcoref": SP,
         "timestamp": time
     }
@@ -64,7 +63,7 @@ def index():
     T_o_json = json.loads(request.data)
     print(T_o_json)
     T_o = float(T_o_json['T_o'])
-    return "dzieki"
+    return "T_o received"
 
 @app.route('/regulation', methods=['PUT'])
 def index_1():
@@ -85,7 +84,7 @@ def index_2():
     speed = time_module_json['speed']
     time = time_module_json['symTime']
     print(time)
-    return "ktora godzina?"
+    return "module 5: timestamp received"
 
 @app.route('/start', methods=['PUT'])
 def index_3():
